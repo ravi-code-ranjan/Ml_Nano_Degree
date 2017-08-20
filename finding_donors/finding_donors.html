@@ -13458,7 +13458,7 @@ It is a ratio of true positives(words classified as spam, and which are actually
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
@@ -13475,16 +13475,17 @@ It is a ratio of true positives(words classified as spam, and which are actually
 <span class="n">true_positive</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">income</span><span class="p">)</span>
 <span class="n">true_negative</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">false_negative</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">false_positive</span> <span class="o">=</span> <span class="n">get_false_positive_count</span><span class="p">(</span><span class="n">income</span><span class="p">,</span> <span class="n">naive_predictions</span><span class="p">)</span>
+<span class="c1"># false_positive = get_false_positive_count(naive_predictions, income)</span>
+<span class="n">false_positive</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">income</span><span class="p">)</span> <span class="o">-</span> <span class="n">true_positive</span> 
 
 <span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_calculation</span><span class="p">(</span><span class="n">income</span><span class="p">,</span> <span class="n">naive_predictions</span><span class="p">)</span>
-<span class="n">recall</span> <span class="o">=</span> <span class="p">(</span><span class="n">true_positive</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">true_positive</span><span class="p">))</span>
+<span class="n">recall</span> <span class="o">=</span> <span class="p">(</span><span class="n">true_positive</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">true_positive</span> <span class="o">+</span> <span class="n">false_negative</span><span class="p">))</span>
 <span class="n">precision</span> <span class="o">=</span> <span class="p">(</span><span class="n">true_positive</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">true_positive</span> <span class="o">+</span> <span class="n">false_positive</span><span class="p">))</span>
 
 <span class="c1"># Calculate F-score using the formula above for beta = 0.5 and correct values for precision and recall.</span>
 <span class="c1"># HINT: The formula above can be written as (1 + beta**2) * (precision * recall) / ((beta**2 * precision) + recall)</span>
 <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">fscore</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">((</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">precision</span><span class="p">)</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span>
+<span class="n">fscore</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(((</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">precision</span><span class="p">)</span> <span class="o">+</span> <span class="n">recall</span><span class="p">))</span>
 
 <span class="c1"># Print the results</span>
 <span class="k">print</span> <span class="s2">&quot;Naive Predictor: [Accuracy score: {:.4f}, F-score: {:.4f}]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">fscore</span><span class="p">)</span>
@@ -13500,7 +13501,7 @@ It is a ratio of true positives(words classified as spam, and which are actually
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Naive Predictor: [Accuracy score: 0.2478, F-score: 1.0000]
+<pre>Naive Predictor: [Accuracy score: 0.2478, F-score: 0.2917]
 </pre>
 </div>
 </div>
@@ -15051,11 +15052,17 @@ Look at the graph at the bottom left from the cell above(the visualization creat
 <p>In our case, I would like to use the random forest classifier to address the binary classification problem.</p>
 <p>Random forest algorithm is the well fit in between <strong> bias and variance </strong> . Below is the explanation for the same.</p>
 <p>We know that error can be composited from bias and variance. A too complex model has low bias but large variance, while a too simple model has low variance but large bias, both leading a high error but two different reasons. As a result, two different ways to solve the problem come into people's mind (maybe Breiman and others), variance reduction for a complex model, or bias reduction for a simple model, which refers to the random forest.</p>
-<p>I would like to explain about the random forest classifier algorithm in Laymen's way. Random forest classifier is a combination of randomly created decision trees. Each randomly created decision tree will give the target class and the final predict target class is the high voted class.</p>
+<p><strong> Random forest Algorithm in Laymen's way </strong></p>
+<p>I would like to explain about the random forest classifier algorithm in <strong> Laymen's way</strong> . Random forest classifier is a combination of randomly created decision trees. Each randomly created decision tree will give the target class and the final predict target class is the high voted class.</p>
+<p>Let's understand the random forest algorithm with the interview process. Basically, when the big company is recruiting any candidates for particular position they will conduct multiple panels of interviews.</p>
+<p>Each panel assess the candidate separately and independently. Generally, even the questions asked in these interviews differ from each other. Randomness is important here.</p>
+<p>Each panel in the interview process is actually a decision tree. Each panel gives a result whether the candidate is a pass or fail and then a majority of these results are declared as final. Say there were 5 panels, 3 said yes and 2 said no. The final verdict will be yes.</p>
+<p>Something similar happens in the random forest as well. The results from each of the tree is taken and the final result is declared accordingly. Voting and averaging is used to predict in the case of classification and regression respectively.</p>
 <p><strong>References:</strong></p>
 <ul>
 <li>[1] <a href="https://stats.stackexchange.com/questions/77018/random-forest-is-it-a-boosting-algorithm">https://stats.stackexchange.com/questions/77018/random-forest-is-it-a-boosting-algorithm</a></li>
 <li>[2] <a href="https://dataaspirant.com/2017/05/22/random-forest-algorithm-machine-learing">https://dataaspirant.com/2017/05/22/random-forest-algorithm-machine-learing</a></li>
+<li>[3] <a href="http://manishbarnwal.com/blog/2016/10/18/random_forest_explained_intuitively/">http://manishbarnwal.com/blog/2016/10/18/random_forest_explained_intuitively/</a></li>
 </ul>
 
 </div>
@@ -15204,7 +15211,7 @@ Final F-score on the testing data: 0.7369
 </tr>
 <tr>
 <td style="text-align:center">F-score</td>
-<td style="text-align:center">1.00</td>
+<td style="text-align:center">0.2917</td>
 <td style="text-align:center">0.6714</td>
 <td style="text-align:center">0.7369</td>
 </tr>
@@ -15220,7 +15227,7 @@ Final F-score on the testing data: 0.7369
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
-<p>The optimized model having the <strong> 0.8597 accuracy </strong> and the having <strong> 0.7316 F-score</strong> value. Compared to the unoptimized model the optimized model having high accuracy and high F-score. Compared to the naive predictor benchmarks accuracy the optimized model accuracy is far far better.</p>
+<p>The optimized model having the <strong> 0.8614 accuracy </strong> and the having <strong> 0.7369 F-score</strong> value. Compared to the unoptimized model the optimized model having high accuracy and high F-score. Compared to the naive predictor benchmarks accuracy and F-score the optimized model accuracy and F-score is far far better.</p>
 
 </div>
 </div>
@@ -15863,6 +15870,8 @@ D8P3thy+y1GQAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>Out of 5 features we selected earlier 3 of them matched with the scikit learn feature_importances. The visualization gives enough validation for each the features by providing the feature weightage.</p>
+<p>Now I would like to explain the similarity of the features which are matched with the feature selection. The 3 matched features are age, education, hours_per. These are mainly the continues information representation variables. May be the education is not completely the continues information representation but it signifies the importance of some one earning more. As some one who has high degree will likely earn more in most of the case.</p>
+<p>The hours_per will sure the important feature as the salary will be based on the number of hours the person worked. Coming to the age, age defines from what age the person is having his salary. As we can't expect some earning huge at the early age and after a certain age people will start earning.</p>
 
 </div>
 </div>
